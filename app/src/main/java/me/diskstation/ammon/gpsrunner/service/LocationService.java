@@ -1,8 +1,8 @@
 /*
  * Copyright (c) Marco Ammon 2015.
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
+ * it under the terms of the GNU General Public License version 3 as published by
+ * the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,33 +15,23 @@
 
 package me.diskstation.ammon.gpsrunner.service;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationProvider;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.ListIterator;
 
-import me.diskstation.ammon.gpsrunner.R;
 import me.diskstation.ammon.gpsrunner.db.LocationDBHelper;
 import me.diskstation.ammon.gpsrunner.db.LocationDBReader;
 import me.diskstation.ammon.gpsrunner.db.LocationDBWriter;
 import me.diskstation.ammon.gpsrunner.db.Run;
 import me.diskstation.ammon.gpsrunner.db.Segment;
 import me.diskstation.ammon.gpsrunner.db.Waypoint;
-import me.diskstation.ammon.gpsrunner.ui.DrawerActivity;
 
 public class LocationService extends Service implements LocationListener {
     private LocationHelper locHelp;
