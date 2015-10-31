@@ -78,7 +78,7 @@ public class MiscFragment extends Fragment implements FragmentCompat.OnRequestPe
             public void onClick(View v) {
                 if (ContextCompat.checkSelfPermission(getActivity(),
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
+                        == PackageManager.PERMISSION_GRANTED) {
                     CSVRunExporter csv = new CSVRunExporter(context);
                     csv.export();
                 } else {

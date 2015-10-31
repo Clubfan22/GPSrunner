@@ -121,7 +121,7 @@ public class DrawerActivity extends AppCompatActivity
         if (!mBound) {
             //TODO: add permission management for Android M
             if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 Intent intent = new Intent(this, me.diskstation.ammon.gpsrunner.service.LocationService.class);
                 boolean successful = bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
                 System.out.println(successful);

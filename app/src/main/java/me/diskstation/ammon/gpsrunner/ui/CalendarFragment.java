@@ -245,7 +245,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemClic
                 }
                 if (ContextCompat.checkSelfPermission(getActivity(),
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
+                        == PackageManager.PERMISSION_GRANTED) {
 
                     exportRuns();
                 } else {
