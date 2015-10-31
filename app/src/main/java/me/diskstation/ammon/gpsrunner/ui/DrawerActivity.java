@@ -208,7 +208,7 @@ public class DrawerActivity extends AppCompatActivity
     private void issueNotification(){
         NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(this);
         //TODO: add proper icons
-        nBuilder.setSmallIcon(R.drawable.ic_stat_name);
+        nBuilder.setSmallIcon(R.drawable.ic_stat_name2);
         nBuilder.setContentTitle(getString(R.string.app_name));
         nBuilder.setContentText(getString(R.string.running));
         Intent overviewIntent = new Intent(this, DrawerActivity.class);
@@ -216,7 +216,7 @@ public class DrawerActivity extends AppCompatActivity
         nBuilder.setContentIntent(pendingOverviewIntent);
 
         //TODO:add proper icon
-        int icon = R.drawable.ic_stat_name;
+        int icon = R.drawable.ic_stat_name2;
         String actionTitle = getString(R.string.stop_recording);
         Intent stopIntent = new Intent();
         stopIntent.setAction(ACTION_STOP);

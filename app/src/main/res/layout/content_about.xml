@@ -113,7 +113,8 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/source"
-            android:id="@+id/sourceLabel" />
+            android:id="@+id/sourceLabel"
+            android:autoLink="web"/>
 
         <TextView
             android:layout_width="wrap_content"

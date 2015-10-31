@@ -84,7 +84,7 @@
     <string name="author">Author:</string>
     <string name="legal">Legal</string>
     <string name="copyright" translatable="false">©2015 Marco Ammon</string>
-    <string name="source">You can find the source code on</string>
+    <string name="source">You can find the source code on https://github.com/Clubfan22/GPSrunner.</string>
     <string name="libraries">Libraries</string>
     <string name="app_version" translatable="false">0.8.3</string>
     <string name="app_author" translatable="false">Marco Ammon</string>

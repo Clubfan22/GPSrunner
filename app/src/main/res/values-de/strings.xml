@@ -78,7 +78,7 @@
     <string name="legal">Rechtliches</string>
     <string name="libraries">Bibliotheken</string>
     <string name="mpac_license">Diese App benutzt MPAndroidCharts, eine Open-Source Bibliothek für Diagramme, welche unter der Apache License 2.0 veröffentlicht wurde. Diese kann unter https://www.apache.org/licenses/LICENSE-2.0.html eingesehen werden.</string>
-    <string name="source">Der Quellcode kann unter gefunden werden.</string>
+    <string name="source">Der Quelltext kann unter https://github.com/Clubfan22/GPSrunner gefunden werden.</string>
     <string name="title_activity_about">Über</string>
     <string name="version">Version:</string>
     <string name="gpl_v3">Dieses Programm ist Freie Software: Sie können es unter den Bedingungen der GNU General Public License Version 3, wie von der Free Software Foundation, weiterverbreiten und/oder modifizieren. Dieses Programm wird in der Hoffnung, dass es nützlich sein wird, aber OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK. Siehe die GNU General Public License für weitere Details.  Sie sollten eine Kopie der GNU General Public License zusammen mit diesem Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses/.</string>
