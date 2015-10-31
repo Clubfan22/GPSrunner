@@ -1,0 +1,77 @@
+<resources>
+    <string name="app_name">GPSrunner</string>
+
+    <string name="title_section1">Overview</string>
+    <string name="title_section2">Calendar</string>
+    <string name="title_section3">Miscellaneous</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <string name="title_activity_calendar">Calendar</string>
+
+    <string name="title_activity_maps">Map</string>
+
+    <string name="distance">Distance</string>
+    <string name="duration">Duration</string>
+    <string name="distance_dummy">0.0 km</string>
+    <string name="duration_dummy">0:00 h</string>
+    <string name="currentVelocity">Current velocity:</string>
+    <string name="currentVelocity_dummy">0.0 km/h</string>
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
+    <string name="title_activity_details">Details</string>
+    <string name="velocity">Velocity</string>
+    <string name="altitude">Altitude</string>
+    <string name="title_activity_details_tab">Details</string>
+    <string name="Map">Map</string>
+    <string name="Charts">Charts</string>
+    <string name="abbr_min">min</string>
+    <string name="abbr_sec">sec</string>
+    <string name="separator">.</string>
+    <string name="run">Run</string>
+    <string name="selected">selected</string>
+    <string name="open">Open</string>
+    <string name="activate_gps">GPS disabled, please activate it!</string>
+    <string name="total_distance">Total distance:</string>
+    <string name="total_duration">Total duration:</string>
+    <string name="max_velocity">Maximum velocity:</string>
+    <string name="avg_velocity">Average velocity:</string>
+    <string name="total_ascent">Total ascent:</string>
+    <string name="total_descent">Total descent:</string>
+    <string name="total_break">Total break:</string>
+    <string name="Details">Details</string>
+    <string name="running">running</string>
+    <string name="stop_recording">Stop recording</string>
+    <string name="settings">Settings</string>
+    <string name="enable_maps">Enable Maps</string>
+    <string name="export">Export</string>
+    <string name="export_as_csv">Export as CSV</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="enable_maps_summary">Still displays maps, but no runs. Recommended for better privacy.</string>
+    <string name="uses_mpac">GPSrunner uses MPAndroidCharts, an open-source chart library licensed under Apache Software License 2.0. You can obtain a copy at http://www.apache.org/licenses/LICENSE-2.0 .</string>
+    <string name="legal_information">Legal</string>
+    <string name="title_activity_about">About</string>
+    <string name="version">Version:</string>
+    <string name="about">About</string>
+    <string name="author">Author:</string>
+    <string name="legal">Legal</string>
+    <string name="copyright" translatable="false">©2015 Marco Ammon</string>
+    <string name="source">You can find the source code on</string>
+    <string name="libraries">Libraries</string>
+    <string name="app_version" translatable="false">0.8.1</string>
+    <string name="app_author" translatable="false">Marco Ammon</string>
+    <string name="mpac_license">This app uses MPAndroidCharts, an open-source chart library released under the Apache License 2.0. A copy can be obtained at https://www.apache.org/licenses/LICENSE-2.0.html</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/settings"
+        android:key="settings">
+    <SwitchPreferenceCompat
+        android:key="pref_maps"
+        android:title="@string/enable_maps"
+        android:summary="@string/enable_maps_summary"
+        android:defaultValue="true"/>
+    </PreferenceCategory>
+    <Preference android:title="@string/about" >
+        <intent android:action="android.intent.action.VIEW"
+            android:targetPackage="me.diskstation.ammon.gpsrunner"
+            android:targetClass="me.diskstation.ammon.gpsrunner.ui.AboutActivity"/>
+    </Preference>
+</PreferenceScreen>

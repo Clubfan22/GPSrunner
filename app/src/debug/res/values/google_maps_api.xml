@@ -1,0 +1,20 @@
+<resources>
+    <!--
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=FD:BE:B2:78:0B:96:E1:9F:81:94:DC:7A:E5:35:DE:C6:2E:2B:CA:4A%3Bme.diskstation.ammon.gpsrunner
+
+    You can also add your credentials to an existing key, using this line:
+    FD:BE:B2:78:0B:96:E1:9F:81:94:DC:7A:E5:35:DE:C6:2E:2B:CA:4A;me.diskstation.ammon.gpsrunner
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
+         AIzaSyDc7JplRR6NVKUMzQOK5oByYqXXGIrLYWw
+    </string>
+</resources>
