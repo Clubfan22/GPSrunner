@@ -86,8 +86,9 @@
     <string name="copyright" translatable="false">©2015 Marco Ammon</string>
     <string name="source">You can find the source code on https://github.com/Clubfan22/GPSrunner.</string>
     <string name="libraries">Libraries</string>
-    <string name="app_version" translatable="false">0.8.3</string>
+    <string name="app_version" translatable="false">0.8.4</string>
     <string name="app_author" translatable="false">Marco Ammon</string>
     <string name="mpac_license">This app uses MPAndroidCharts, an open-source chart library released under the Apache License 2.0. A copy can be obtained at https://www.apache.org/licenses/LICENSE-2.0.html</string>
     <string name="gpl_v3">This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License version 3 as published by the Free Software Foundation. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses/.</string>
+    <string name="searching_signal">Searching for GPS signal</string>
 </resources>

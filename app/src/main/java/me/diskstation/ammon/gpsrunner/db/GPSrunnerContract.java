@@ -31,6 +31,7 @@ public final class GPSrunnerContract {
 
     public static abstract class Waypoints implements BaseColumns {
         public static final String TABLE_NAME = "waypoints";
+
         public static final String COLUMN_NAME_LONGTITUDE = "longtitude";
         public static final String COLUMN_NAME_LATITUDE = "latitude";
         public static final String COLUMN_NAME_HEIGHT = "height";
@@ -50,6 +51,7 @@ public final class GPSrunnerContract {
 
     public static abstract class Sections implements BaseColumns {
         public static final String TABLE_NAME = "sections";
+
         public static final String COLUMN_NAME_START_ID = "start_id";
         public static final String COLUMN_NAME_END_ID = "end_id";
         public static final String COLUMN_NAME_DISTANCE = "distance";
@@ -74,8 +76,7 @@ public final class GPSrunnerContract {
     public static abstract class Runs implements BaseColumns {
 
         public static final String TABLE_NAME = "runs";
-        //   public static final String COLUMN_NAME_START_ID = "start_id";
-        //   public static final String COLUMN_NAME_END_ID = "end_id";
+
         public static final String COLUMN_NAME_DISTANCE = "distance";
         public static final String COLUMN_NAME_TIME_INTERVAL = "time_interval";
         public static final String COLUMN_NAME_MAX_VELOCITY = "max_velocity";

@@ -84,15 +84,4 @@ public class LocationDBWriter {
         return affectedRows;
     }
 
-
-    /*public void updateRun(long run) {
-        SQLiteDatabase db = dbHelp.getWritableDatabase();
-        ContentValues values = run.toContentValues(true);
-        String selection = GPSrunnerContract.Runs._ID + " = ?";
-        String[] selectionArgs = {String.valueOf(run.id)};
-        db.update(GPSrunnerContract.Runs.TABLE_NAME, values, selection, selectionArgs);
-        System.out.println(values.toString());
-
-    }*/
-
 }

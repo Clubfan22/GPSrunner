@@ -24,6 +24,8 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 import me.diskstation.ammon.gpsrunner.db.LocationDBHelper;
@@ -66,8 +68,6 @@ public class LocationService extends Service implements LocationListener {
         locHelp.removeLocationUpdates();
         return true;
     }
-
-
 
     public boolean initialize(){
         locHelp = new LocationHelper(this);
@@ -167,8 +167,8 @@ public class LocationService extends Service implements LocationListener {
 
     private long storeWaypoint(Location location) {
         Waypoint wp = new Waypoint(location, runId);
-        runBundle.putDouble("latitude", location.getLatitude());
-        runBundle.putDouble("longtitude", location.getLongitude());
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        runBundle.putParcelable("position", latLng);
         return dbWrite.storeWaypoint(wp);
     }
 

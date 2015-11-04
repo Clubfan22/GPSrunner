@@ -19,6 +19,7 @@ package me.diskstation.ammon.gpsrunner.ui;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -61,6 +62,7 @@ public class OverviewFragment extends Fragment implements OnMapReadyCallback {
     private Button button;
     private boolean isMapsEnabled = true;
     private ValueFormatter vf;
+    private Bundle run;
 
     /**
      * Use this factory method to create a new instance of
@@ -83,6 +85,7 @@ public class OverviewFragment extends Fragment implements OnMapReadyCallback {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(drawAct.getBaseContext());
         isMapsEnabled = sharedPref.getBoolean("pref_maps", true);
         vf = new ValueFormatter(drawAct.getApplicationContext());
+        waypoints = new ArrayList<>();
     }
 
     @Override
@@ -99,7 +102,8 @@ public class OverviewFragment extends Fragment implements OnMapReadyCallback {
                     if (!OverviewFragment.this.drawAct.isLocationServiceBound()) {
                         buttonBlocked = true;
                         OverviewFragment.this.drawAct.startLocationService(OverviewFragment.this);
-                        } else {
+                        button.setText(getString(R.string.searching_signal));
+                    } else {
                         OverviewFragment.this.drawAct.stopLocationService();
                         button.setText(getString(R.string.start));
                     }
@@ -114,6 +118,9 @@ public class OverviewFragment extends Fragment implements OnMapReadyCallback {
             SupportMapFragment smf = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapFragment);
             //calls onMapReady();
             smf.getMapAsync(this);
+        }
+        if (savedInstanceState != null){
+            update(savedInstanceState.getBundle("run"));
         }
         return view;
     }
@@ -130,7 +137,35 @@ public class OverviewFragment extends Fragment implements OnMapReadyCallback {
             }
         }
     }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            ArrayList<Parcelable> parcelable = savedInstanceState.getParcelableArrayList("waypoints");
+            if (waypoints.size() == 0 && parcelable != null) {
 
+                if (parcelable.size() > 0) {
+                    for (int i = 0; i < parcelable.size(); i++) {
+                        waypoints.add((LatLng) parcelable.get(i));
+                    }
+                    updatePolyline(waypoints, waypoints.get(waypoints.size() - 1));
+                }
+            }
+            updateViews(savedInstanceState.getBundle("run"));
+        }
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        if (drawAct.mBound){
+            if (run != null){
+                outState.putBundle("run", run);
+            }
+            if (waypoints != null) {
+                outState.putParcelableArrayList("waypoints", waypoints);
+            }
+        }
+    }
     //Callback from smf.getMapAsync(this) in onCreateView()
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -145,14 +180,20 @@ public class OverviewFragment extends Fragment implements OnMapReadyCallback {
         path = gMap.addPolyline(plOpt);
     }
 
-    public void update(Bundle updatedRun){
+    public void update(Bundle updatedRun, LatLng latestPosition){
+        update(updatedRun);
+        if (isMapsEnabled) {
+            updateMap(latestPosition);
+        }
+    }
+
+    protected void update(Bundle updatedRun){
         button.setText(R.string.stop);
         buttonBlocked = false;
         updateViews(updatedRun);
-        if (isMapsEnabled) {
-            updateMap(updatedRun);
-        }
+        run = updatedRun;
     }
+
     public void updateViews(Bundle updatedRun){
         long timeInterval = updatedRun.getLong("timeInterval", 0);
         double distance = updatedRun.getDouble("distance", 0.0d);
@@ -162,29 +203,32 @@ public class OverviewFragment extends Fragment implements OnMapReadyCallback {
         velocityView.setText(vf.formatVelocity(velocity));
     }
 
-    protected void updateMap(Bundle updatedRun){
-        double latitude = updatedRun.getDouble("latitude");
-        double longtitude = updatedRun.getDouble("longtitude");
-        LatLng currentLocation = new LatLng(latitude, longtitude);
+    protected void updateMap(LatLng latestPosition){
         if (waypoints == null){
             waypoints = new ArrayList<>();
         }
-        waypoints.add(currentLocation);
+        waypoints.add(latestPosition);
+        updatePolyline(waypoints, latestPosition);
+    }
+
+    private void updatePolyline (ArrayList<LatLng> points, LatLng latestPosition){
         if (path == null){
             path = gMap.addPolyline(plOpt);
         }
-        path.setPoints(waypoints);
+        path.setPoints(points);
         float currentZoomLevel = gMap.getCameraPosition().zoom;
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLocation, currentZoomLevel);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latestPosition, currentZoomLevel);
         gMap.animateCamera(cameraUpdate);
     }
 
     public void reset(){
         resetViews();
+        run = null;
         if (isMapsEnabled) {
             resetMap();
         }
     }
+
     protected void resetViews(){
         button.setText(R.string.start);
         durationView.setText(getString(R.string.duration_dummy));
@@ -192,6 +236,7 @@ public class OverviewFragment extends Fragment implements OnMapReadyCallback {
         velocityView.setText(getString(R.string.currentVelocity_dummy));
 
     }
+
     protected void resetMap(){
         if (waypoints != null){
             waypoints.clear();

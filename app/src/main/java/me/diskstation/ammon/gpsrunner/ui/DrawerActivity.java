@@ -39,6 +39,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -71,9 +73,12 @@ public class DrawerActivity extends AppCompatActivity
     private final int ACCESS_LOCATION_FINE_REQUEST = 1;
     LocationService locServ;
     boolean mBound = false;
-    private OverviewFragment overviewFragment;
     public static final String ACTION_STOP = "me.diskstation.ammon.gpsrunner.stop_location_service";
     private BroadcastReceiver receiver;
+    private Bundle currentRun;
+    private OverviewFragment ovFragment;
+    private CalendarFragment calFragment;
+    private MiscFragment miscFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,9 @@ public class DrawerActivity extends AppCompatActivity
         setContentView(R.layout.activity_drawer);
         //Load FragmentManager
         fragmentManager = getSupportFragmentManager();
+        if (savedInstanceState != null){
+            ovFragment = (OverviewFragment) fragmentManager.getFragment(savedInstanceState,"ovFragment");
+        }
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 fragmentManager.findFragmentById(R.id.navigation_drawer);
         mTitle = getString(R.string.title_section1);
@@ -104,9 +112,8 @@ public class DrawerActivity extends AppCompatActivity
     @Override
     protected void onResume(){
         super.onResume();
-        if(mBound){
-            ((NotificationManager) getSystemService(NOTIFICATION_SERVICE))
-                    .cancelAll();
+        if (mBound){
+            locServ.stopForeground(true);
         }
     }
 
@@ -114,6 +121,13 @@ public class DrawerActivity extends AppCompatActivity
     protected void onDestroy(){
         super.onDestroy();
         removeReceiver();
+    }
+
+    @Override
+    protected void onSaveInstanceState (Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putBundle("run", currentRun);
+        //getSupportFragmentManager().putFragment(outState, "ovFragment", ovFragment);
     }
 
 
@@ -125,7 +139,6 @@ public class DrawerActivity extends AppCompatActivity
                 Intent intent = new Intent(this, me.diskstation.ammon.gpsrunner.service.LocationService.class);
                 boolean successful = bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
                 System.out.println(successful);
-                this.overviewFragment = overviewFragment;
                 return successful;
             } else {
                 ActivityCompat.requestPermissions(this,
@@ -138,27 +151,24 @@ public class DrawerActivity extends AppCompatActivity
         }
     }
     public void stopLocationService(){
-        //if (mBound) {
+        try {
             unbindService(mConnection);
-            overviewFragment.reset();
-            mBound = false;
-        //}
+        } catch (RuntimeException ex){
+            System.out.println(ex);
+        }
+        ovFragment.reset();
+        locServ = null;
+        mBound = false;
+        currentRun = null;
     }
 
-    /*@Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch(requestCode){
-            case ACCESS_LOCATION_FINE_REQUEST:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    st
-                }
-        }
-
-    }*/
     @Override
     public void onDataChanged(Bundle run) {
-        overviewFragment.update(run);
+        currentRun = run;
+        LatLng position = run.getParcelable("position");
+        ovFragment.update(run, position);
     }
+
     public boolean isLocationServiceBound(){
         return mBound;
     }
@@ -177,7 +187,6 @@ public class DrawerActivity extends AppCompatActivity
                 Toast toast = Toast.makeText(DrawerActivity.this, getString(R.string.activate_gps), Toast.LENGTH_LONG);
                 toast.show();
                 stopLocationService();
-                //TODO: restart binding
             }
 
 
@@ -211,11 +220,11 @@ public class DrawerActivity extends AppCompatActivity
         nBuilder.setSmallIcon(R.drawable.ic_stat_name2);
         nBuilder.setContentTitle(getString(R.string.app_name));
         nBuilder.setContentText(getString(R.string.running));
-        Intent overviewIntent = new Intent(this, DrawerActivity.class);
-        PendingIntent pendingOverviewIntent = PendingIntent.getActivity(this, 0, overviewIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent overviewIntent = this.getIntent();
+        overviewIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        PendingIntent pendingOverviewIntent = PendingIntent.getActivity(getApplicationContext(), 0, overviewIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         nBuilder.setContentIntent(pendingOverviewIntent);
 
-        //TODO:add proper icon
         int icon = R.drawable.ic_stat_name2;
         String actionTitle = getString(R.string.stop_recording);
         Intent stopIntent = new Intent();
@@ -225,8 +234,7 @@ public class DrawerActivity extends AppCompatActivity
         nBuilder.addAction(action);
         //Disable dismissability
         nBuilder.setOngoing(true);
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(1, nBuilder.build());
+        locServ.startForeground(1, nBuilder.build());
     }
 
     @Override
@@ -235,15 +243,24 @@ public class DrawerActivity extends AppCompatActivity
         Fragment fragment;
         switch (position){
             case ITEM_OVERVIEW:
-                fragment =  OverviewFragment.newInstance();
+                if (ovFragment == null){
+                    ovFragment = OverviewFragment.newInstance();
+                }
+                fragment =  ovFragment;
                 mTitle = getString(R.string.title_section1);
                 break;
             case ITEM_CALENDAR:
-                fragment = CalendarFragment.newInstance();
+                if (calFragment == null){
+                    calFragment = CalendarFragment.newInstance();
+                }
+                fragment = calFragment;
                 mTitle = getString(R.string.title_section2);
                 break;
             case ITEM_MISCELLANEOUS:
-                fragment =  MiscFragment.newInstance();
+                if (miscFragment == null){
+                    miscFragment = MiscFragment.newInstance();
+                }
+                fragment =  miscFragment;
                 mTitle = getString(R.string.title_section3);
                 break;
             default:
@@ -251,8 +268,9 @@ public class DrawerActivity extends AppCompatActivity
                 break;
         }
         // update the main content by replacing fragments
+
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, fragment)
+                .replace(R.id.container,fragment)
                 .commit();
     }
 
@@ -276,13 +294,6 @@ public class DrawerActivity extends AppCompatActivity
             return true;
         }
         return super.onCreateOptionsMenu(menu);
-    }
-
-
-
-
-    public static FragmentManager getFragmenManager(){
-        return fragmentManager;
     }
 
 

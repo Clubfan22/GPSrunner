@@ -16,7 +16,6 @@
 package me.diskstation.ammon.gpsrunner.service;
 
 import android.content.Context;
-import android.location.Criteria;
 import android.location.LocationListener;
 import android.location.LocationManager;
 
@@ -28,8 +27,6 @@ import android.location.LocationManager;
 public class LocationHelper {
     //LocationManager used for getting updates from GPS module
     LocationManager locMan;
-    //Criteria specifying properties of location updates
-    Criteria criteria;
     LocationListener locLis;
     //Location provider GPS, also uses GLONASS
     String LOCATION_PROVIDER = "gps";
@@ -40,9 +37,6 @@ public class LocationHelper {
     public LocationHelper(Context context){
         //requesting LocationManager
         locMan = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        //setting up criteria with fine accuracy
-        criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
         //Setting up locLis
         locLis = (LocationListener) context;
     }
@@ -54,8 +48,12 @@ public class LocationHelper {
     protected boolean addLocationUpdates(LocationListener locLis) {
         boolean successful = false;
         if (locMan.isProviderEnabled(LOCATION_PROVIDER)){
-            locMan.requestLocationUpdates(LOCATION_PROVIDER, minUpdateInterval, minUpdateDistance, locLis);
-            successful = true;
+            try {
+                locMan.requestLocationUpdates(LOCATION_PROVIDER, minUpdateInterval, minUpdateDistance, locLis);
+                successful = true;
+            } catch (SecurityException ex){
+                System.out.println(ex);
+            }
         }
         return successful;
     }
@@ -64,7 +62,11 @@ public class LocationHelper {
         removeLocationUpdates(locLis);
     }
     protected void removeLocationUpdates(LocationListener locLis){
-         locMan.removeUpdates(locLis);
+         try{
+             locMan.removeUpdates(locLis);
+         } catch (SecurityException ex){
+             System.out.println(ex);
+         }
     }
 
 

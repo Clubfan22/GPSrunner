@@ -139,9 +139,7 @@ public class LineDetailsFragment extends Fragment {
             //Todo: add more cases
         }
         lc.setMaxVisibleValueCount(30);
-        //lc.setAutoScaleMinMaxEnabled(true);
         lc.setHighlightEnabled(false);
-        //lc.animateX(1000);
         lc.setDrawGridBackground(false);
         XAxis xAxis = lc.getXAxis();
         xAxis.setEnabled(true);
