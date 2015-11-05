@@ -22,7 +22,7 @@
     <string name="title_section2">Kalender</string>
     <string name="title_section3">Verschiedenes</string>
     <string name="distance">Strecke</string>
-    <string name="distance_dummy">0,00 km</string>
+    <string name="distance_dummy">0,0 m</string>
     <string name="duration">Dauer</string>
     <string name="duration_dummy">0:00 h</string>
     <string name="title_activity_calendar">Kalender</string>
