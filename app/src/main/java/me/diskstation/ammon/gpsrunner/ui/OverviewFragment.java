@@ -119,9 +119,6 @@ public class OverviewFragment extends Fragment implements OnMapReadyCallback {
             //calls onMapReady();
             smf.getMapAsync(this);
         }
-        if (savedInstanceState != null){
-            update(savedInstanceState.getBundle("run"));
-        }
         return view;
     }
 
@@ -151,7 +148,13 @@ public class OverviewFragment extends Fragment implements OnMapReadyCallback {
                     updatePolyline(waypoints, waypoints.get(waypoints.size() - 1));
                 }
             }
-            updateViews(savedInstanceState.getBundle("run"));
+            if (savedInstanceState.containsKey("run")) {
+                Bundle run = savedInstanceState.getBundle("run");
+                if (run != null) {
+                    update(savedInstanceState.getBundle("run"));
+                }
+            }
+
         }
     }
     @Override

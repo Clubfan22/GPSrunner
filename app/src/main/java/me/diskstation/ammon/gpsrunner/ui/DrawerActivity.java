@@ -178,10 +178,10 @@ public class DrawerActivity extends AppCompatActivity
         public void onServiceConnected(ComponentName name, IBinder service) {
             LocationService.LocationBinder binder = (LocationService.LocationBinder) service;
             DrawerActivity.this.locServ = binder.getService();
+            DrawerActivity.this.ovFragment.unblockButton();
             boolean successful = DrawerActivity.this.locServ.initialize();
             if (successful){
                 DrawerActivity.this.locServ.addOnDataChangedListener(DrawerActivity.this);
-                DrawerActivity.this.ovFragment.unblockButton();
                 DrawerActivity.this.mBound = true;
                 System.out.println("onServiceConnected was called");
             } else {
@@ -243,37 +243,42 @@ public class DrawerActivity extends AppCompatActivity
     public void onNavigationDrawerItemSelected(@Items int position) {
         // create fragment depending on selection
         Fragment fragment;
-        switch (position){
-            case ITEM_OVERVIEW:
-                if (ovFragment == null){
-                    ovFragment = OverviewFragment.newInstance();
-                }
-                fragment =  ovFragment;
-                mTitle = getString(R.string.title_section1);
-                break;
-            case ITEM_CALENDAR:
-                if (calFragment == null){
-                    calFragment = CalendarFragment.newInstance();
-                }
-                fragment = calFragment;
-                mTitle = getString(R.string.title_section2);
-                break;
-            case ITEM_MISCELLANEOUS:
-                if (miscFragment == null){
-                    miscFragment = MiscFragment.newInstance();
-                }
-                fragment =  miscFragment;
-                mTitle = getString(R.string.title_section3);
-                break;
-            default:
-                fragment = null;
-                break;
-        }
-        // update the main content by replacing fragments
+        if (!mBound) {
+            switch (position) {
+                case ITEM_OVERVIEW:
+                    if (ovFragment == null) {
+                        ovFragment = OverviewFragment.newInstance();
+                    }
+                    fragment = ovFragment;
+                    mTitle = getString(R.string.title_section1);
+                    break;
+                case ITEM_CALENDAR:
+                    if (calFragment == null) {
+                        calFragment = CalendarFragment.newInstance();
+                    }
+                    fragment = calFragment;
+                    mTitle = getString(R.string.title_section2);
+                    break;
+                case ITEM_MISCELLANEOUS:
+                    if (miscFragment == null) {
+                        miscFragment = MiscFragment.newInstance();
+                    }
+                    fragment = miscFragment;
+                    mTitle = getString(R.string.title_section3);
+                    break;
+                default:
+                    fragment = null;
+                    break;
+            }
+            // update the main content by replacing fragments
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container,fragment)
-                .commit();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit();
+        } else {
+            Toast toast = Toast.makeText(DrawerActivity.this, getString(R.string.drawer_blocked), Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
 
