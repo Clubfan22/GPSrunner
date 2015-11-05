@@ -180,6 +180,10 @@ public class OverviewFragment extends Fragment implements OnMapReadyCallback {
         path = gMap.addPolyline(plOpt);
     }
 
+    protected void unblockButton(){
+        buttonBlocked = false;
+    }
+
     public void update(Bundle updatedRun, LatLng latestPosition){
         update(updatedRun);
         if (isMapsEnabled) {
@@ -211,14 +215,25 @@ public class OverviewFragment extends Fragment implements OnMapReadyCallback {
         updatePolyline(waypoints, latestPosition);
     }
 
-    private void updatePolyline (ArrayList<LatLng> points, LatLng latestPosition){
-        if (path == null){
-            path = gMap.addPolyline(plOpt);
+    private void updatePolyline (final ArrayList<LatLng> points, final LatLng latestPosition){
+        if (gMap != null) {
+            if (path == null) {
+                path = gMap.addPolyline(plOpt);
+            }
+            path.setPoints(points);
+            float currentZoomLevel = gMap.getCameraPosition().zoom;
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latestPosition, currentZoomLevel);
+            gMap.animateCamera(cameraUpdate);
+        } else {
+            SupportMapFragment smf = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapFragment);
+            smf.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
+                    OverviewFragment.this.onMapReady(googleMap);
+                    updatePolyline(points, latestPosition);
+                }
+            });
         }
-        path.setPoints(points);
-        float currentZoomLevel = gMap.getCameraPosition().zoom;
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latestPosition, currentZoomLevel);
-        gMap.animateCamera(cameraUpdate);
     }
 
     public void reset(){

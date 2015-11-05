@@ -181,6 +181,7 @@ public class DrawerActivity extends AppCompatActivity
             boolean successful = DrawerActivity.this.locServ.initialize();
             if (successful){
                 DrawerActivity.this.locServ.addOnDataChangedListener(DrawerActivity.this);
+                DrawerActivity.this.ovFragment.unblockButton();
                 DrawerActivity.this.mBound = true;
                 System.out.println("onServiceConnected was called");
             } else {
@@ -225,13 +226,14 @@ public class DrawerActivity extends AppCompatActivity
         PendingIntent pendingOverviewIntent = PendingIntent.getActivity(getApplicationContext(), 0, overviewIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         nBuilder.setContentIntent(pendingOverviewIntent);
 
-        int icon = R.drawable.ic_stat_name2;
+        int icon = R.drawable.ic_stop_icon;
         String actionTitle = getString(R.string.stop_recording);
         Intent stopIntent = new Intent();
         stopIntent.setAction(ACTION_STOP);
         PendingIntent pendingStopIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, stopIntent, 0);
         NotificationCompat.Action action = new NotificationCompat.Action(icon, actionTitle, pendingStopIntent);
         nBuilder.addAction(action);
+        nBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         //Disable dismissability
         nBuilder.setOngoing(true);
         locServ.startForeground(1, nBuilder.build());

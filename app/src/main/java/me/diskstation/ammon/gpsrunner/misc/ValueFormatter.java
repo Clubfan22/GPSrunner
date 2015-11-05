@@ -42,11 +42,11 @@ public class ValueFormatter {
     public ValueFormatter(){}
 
     public String formatDistance(double distance){
-        return String.valueOf((double) Math.round(distance * 10d) / 10d + "m");
+        return String.valueOf((double) Math.round(distance * 10) / 10.0d + "m");
     }
 
     public String formatVelocity(double velocity){
-        return String.valueOf((double) Math.round(velocity * 10d) / 10d + "m/s");
+        return String.valueOf((double) Math.round(velocity * 10) / 10.0d + "m/s");
     }
 
     public String formatTimeInterval(long interval){
