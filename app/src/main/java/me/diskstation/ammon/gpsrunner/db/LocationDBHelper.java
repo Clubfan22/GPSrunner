@@ -22,7 +22,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Created by Marco on 06.09.2015.
  * @author Marco Ammon
- * implemented as "Singleton" because only one writer should be allowed
  */
 public class LocationDBHelper extends SQLiteOpenHelper{
 
@@ -34,7 +33,8 @@ public class LocationDBHelper extends SQLiteOpenHelper{
                     GPSrunnerContract.Waypoints.COLUMN_NAME_LATITUDE + " REAL," +
                     GPSrunnerContract.Waypoints.COLUMN_NAME_HEIGHT + " REAL," +
                     GPSrunnerContract.Waypoints.COLUMN_NAME_TIMESTAMP + " INTEGER," +
-                    GPSrunnerContract.Waypoints.COLUMN_NAME_RUN_ID + " INTEGER" + " )";
+                    GPSrunnerContract.Waypoints.COLUMN_NAME_RUN_ID + " INTEGER," +
+                    "FOREIGN KEY(" + GPSrunnerContract.Waypoints.COLUMN_NAME_RUN_ID + ") REFERENCES " + GPSrunnerContract.Runs.TABLE_NAME + "(" + GPSrunnerContract.Runs._ID + "))";
     private final String SQL_CREATE_SECTIONS =
             "CREATE TABLE " + GPSrunnerContract.Sections.TABLE_NAME + " (" +
                     GPSrunnerContract.Sections._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -44,12 +44,14 @@ public class LocationDBHelper extends SQLiteOpenHelper{
                     GPSrunnerContract.Sections.COLUMN_NAME_TIME_INTERVAL + " INTEGER," +
                     GPSrunnerContract.Sections.COLUMN_NAME_VELOCITY + " REAL," +
                     GPSrunnerContract.Sections.COLUMN_NAME_HEIGHT_INTERVAL + " REAL," +
-                    GPSrunnerContract.Sections.COLUMN_NAME_RUN_ID  + " INTEGER )";
+                    GPSrunnerContract.Sections.COLUMN_NAME_RUN_ID  + " INTEGER," +
+                    "FOREIGN KEY(" + GPSrunnerContract.Sections.COLUMN_NAME_START_ID + ") REFERENCES " + GPSrunnerContract.Waypoints.TABLE_NAME + "(" + GPSrunnerContract.Waypoints._ID + ")," +
+                    "FOREIGN KEY(" + GPSrunnerContract.Sections.COLUMN_NAME_END_ID + ") REFERENCES " + GPSrunnerContract.Waypoints.TABLE_NAME + "(" + GPSrunnerContract.Waypoints._ID + ")," +
+                    "FOREIGN KEY(" + GPSrunnerContract.Sections.COLUMN_NAME_RUN_ID + ") REFERENCES " + GPSrunnerContract.Runs.TABLE_NAME + "(" + GPSrunnerContract.Runs._ID + "))";
+
     private final String SQL_CREATE_RUNS =
             "CREATE TABLE " + GPSrunnerContract.Runs.TABLE_NAME + " (" +
                     GPSrunnerContract.Runs._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-//                    GPSrunnerContract.Runs.COLUMN_NAME_START_ID + " INTEGER," +
-//                    GPSrunnerContract.Runs.COLUMN_NAME_END_ID + " INTEGER," +
                     GPSrunnerContract.Runs.COLUMN_NAME_DISTANCE + " REAL," +
                     GPSrunnerContract.Runs.COLUMN_NAME_TIME_INTERVAL + " INTEGER," +
                     GPSrunnerContract.Runs.COLUMN_NAME_MAX_VELOCITY + " REAL," +
@@ -76,9 +78,9 @@ public class LocationDBHelper extends SQLiteOpenHelper{
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL(SQL_CREATE_RUNS);
         db.execSQL(SQL_CREATE_WAYPOINTS);
         db.execSQL(SQL_CREATE_SECTIONS);
-        db.execSQL(SQL_CREATE_RUNS);
     }
 
     /**
@@ -103,8 +105,8 @@ public class LocationDBHelper extends SQLiteOpenHelper{
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        deleteTables(db);
-        onCreate(db);
+        //deleteTables(db);
+        //onCreate(db);
     }
 
     private void deleteTables(SQLiteDatabase db){
