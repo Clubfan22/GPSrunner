@@ -51,7 +51,7 @@ public class LocationDBWriter {
             System.out.println("Inserting segment " + sg.startId + " " + sg.endId + " failed!");
         }
         db.close();
-        System.out.println(values.toString());
+        //System.out.println(values.toString());
         return newRowId;
     }
     public long storeRun(Run run){
@@ -62,7 +62,7 @@ public class LocationDBWriter {
             System.out.println("Inserting run failed!");
         }
         db.close();
-        System.out.println(values.toString());
+        //System.out.println(values.toString());
 
         return newRowID;
 

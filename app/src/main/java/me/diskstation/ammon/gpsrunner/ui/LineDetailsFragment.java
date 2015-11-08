@@ -15,8 +15,10 @@
 
 package me.diskstation.ammon.gpsrunner.ui;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,7 @@ import me.diskstation.ammon.gpsrunner.R;
 import me.diskstation.ammon.gpsrunner.db.Segment;
 import me.diskstation.ammon.gpsrunner.db.Waypoint;
 import me.diskstation.ammon.gpsrunner.misc.LineColors;
+import me.diskstation.ammon.gpsrunner.misc.RunsYAxisFormatter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,6 +67,7 @@ public class LineDetailsFragment extends Fragment {
     private String abbrMin;
     private String abbrSec;
     private String separator;
+    private int velocityUnit;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -99,6 +103,8 @@ public class LineDetailsFragment extends Fragment {
         abbrMin = detailsActivity.getString(R.string.abbr_min);
         abbrSec = detailsActivity.getString(R.string.abbr_sec);
         separator = detailsActivity.getString(R.string.separator);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        velocityUnit = Integer.parseInt(sharedPref.getString("pref_velocity_unit", "1"));
     }
 
     @Override
@@ -145,7 +151,6 @@ public class LineDetailsFragment extends Fragment {
         xAxis.setEnabled(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawAxisLine(true);
-        //xAxis.setValueFormatter(new TimestampXAxisValueFormatter());
         xAxis.setAvoidFirstLastClipping(true);
 
         //remove right yAxis (ain't nobody got time for that)
@@ -154,6 +159,15 @@ public class LineDetailsFragment extends Fragment {
         yAxis.setStartAtZero(false);
         yAxis.setSpaceTop(0.2f);
         yAxis.setSpaceBottom(0.2f);
+        switch (mode){
+            case MODE_ALTITUDE:
+                yAxis.setValueFormatter(new RunsYAxisFormatter(2, separator));
+                break;
+            case MODE_VELOCITY:
+                yAxis.setValueFormatter(new RunsYAxisFormatter(velocityUnit, separator));
+                break;
+        }
+
         //Waypoints is needed in every case for generating xAxis labels
         runsWaypoints = new ArrayList<>();
         for (int i = 0; i < runIds.length; i++){
@@ -244,7 +258,7 @@ public class LineDetailsFragment extends Fragment {
         double temp = timestamp / 1000;
         long xValue = Math.round(temp)*1000;
         int index = xValues.indexOf(xValue);
-        System.out.println("value: " + value + " xValue: " + xValue + " index: " + index);
+        //System.out.println("value: " + value + " xValue: " + xValue + " index: " + index);
         //Experimental
         if (index == -1){
 //            xValue = xValue + 1000;
@@ -260,6 +274,9 @@ public class LineDetailsFragment extends Fragment {
         switch (mode){
             case MODE_VELOCITY:
                 value = (float) sg.velocity;
+                if (velocityUnit == 1){
+                    value = value * 3.6f;
+                }
                 break;
             //Todo: add more modes
         }

@@ -63,6 +63,7 @@ public class OverviewFragment extends Fragment implements OnMapReadyCallback {
     private boolean isMapsEnabled = true;
     private ValueFormatter vf;
     private Bundle run;
+    private String separator;
 
     /**
      * Use this factory method to create a new instance of
@@ -113,6 +114,8 @@ public class OverviewFragment extends Fragment implements OnMapReadyCallback {
         distanceView = (TextView) view.findViewById(R.id.distanceView);
         durationView = (TextView) view.findViewById(R.id.durationView);
         velocityView = (TextView) view.findViewById(R.id.currentVelocityView);
+        velocityView.setText(vf.formatVelocity(0.0d));
+
         if (isMapsEnabled) {
             //get SupportMapFragment (wrapping most of the Map logic)
             SupportMapFragment smf = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapFragment);
@@ -251,8 +254,7 @@ public class OverviewFragment extends Fragment implements OnMapReadyCallback {
         button.setText(R.string.start);
         durationView.setText(getString(R.string.duration_dummy));
         distanceView.setText(getString(R.string.distance_dummy));
-        velocityView.setText(getString(R.string.currentVelocity_dummy));
-
+        velocityView.setText(vf.formatVelocity(0.0d));
     }
 
     protected void resetMap(){

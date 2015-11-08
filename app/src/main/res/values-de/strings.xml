@@ -40,7 +40,7 @@
     <string name="november">November</string>
     <string name="december">Dezember</string>
     <string name="currentVelocity">Aktuelle Geschwindigkeit:</string>
-    <string name="currentVelocity_dummy">0,0 m/s</string>
+    <string name="currentVelocity_dummy">0,0</string>
     <string name="velocity">Geschwindigkeit</string>
     <string name="altitude">Höhe</string>
     <string name="Charts">Diagramme</string>
@@ -84,4 +84,5 @@
     <string name="gpl_v3">Dieses Programm ist Freie Software: Sie können es unter den Bedingungen der GNU General Public License Version 3, wie von der Free Software Foundation, weiterverbreiten und/oder modifizieren. Dieses Programm wird in der Hoffnung, dass es nützlich sein wird, aber OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK. Siehe die GNU General Public License für weitere Details.  Sie sollten eine Kopie der GNU General Public License zusammen mit diesem Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses/.</string>
     <string name="searching_signal">Suche GPS-Signal</string>
     <string name="drawer_blocked">Während der Aufzeichnung gesperrt</string>
+    <string name="velocity_unit">Einheit der Geschwindigkeit:</string>
 </resources>

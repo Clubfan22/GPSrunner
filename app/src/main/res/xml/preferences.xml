@@ -18,11 +18,18 @@
     <PreferenceCategory
         android:title="@string/settings"
         android:key="settings">
-    <SwitchPreferenceCompat
-        android:key="pref_maps"
-        android:title="@string/enable_maps"
-        android:summary="@string/enable_maps_summary"
-        android:defaultValue="true"/>
+        <SwitchPreferenceCompat
+            android:key="pref_maps"
+            android:title="@string/enable_maps"
+            android:summary="@string/enable_maps_summary"
+            android:defaultValue="true"/>
+        <ListPreference
+            android:key="pref_velocity_unit"
+            android:title="@string/velocity_unit"
+            android:entries="@array/velocity_units"
+            android:entryValues="@array/velocity_units_values"
+            android:defaultValue="1"/>
+
     </PreferenceCategory>
     <Preference android:title="@string/about" >
         <intent android:action="android.intent.action.VIEW"

@@ -16,6 +16,8 @@
 package me.diskstation.ammon.gpsrunner.misc;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.support.v7.preference.PreferenceManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -31,26 +33,46 @@ public class ValueFormatter {
     private String abbrMin;
     private String abbrSec;
     private String separator;
+    private int velocityUnit;
+    public static final int UNIT_METERS_PER_SECOND = 0;
+    public static final int UNIT_KILOMETERS_PER_HOUR = 1;
 
     public ValueFormatter(Context c){
         context = c;
         abbrMin = context.getString(R.string.abbr_min);
         abbrSec = context.getString(R.string.abbr_sec);
         separator = context.getString(R.string.separator);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
+        velocityUnit = Integer.parseInt(sharedPref.getString("pref_velocity_unit", "1"));
     }
 
     public ValueFormatter(){}
 
     public String formatDistance(double distance){
-        return String.valueOf((double) Math.round(distance * 10) / 10.0d + "m");
+        return String.valueOf((double) Math.round(distance * 10) / 10.0d + " m").replace(".", separator);
     }
 
     public String formatVelocity(double velocity){
-        return String.valueOf((double) Math.round(velocity * 10) / 10.0d + "m/s");
+        if (velocityUnit == 1){
+            velocity = velocity * 3.6d;
+        }
+        velocity = (double) Math.round(velocity * 10) / 10.0d;
+        String formattedVelocity;
+        switch (velocityUnit){
+            case UNIT_METERS_PER_SECOND:
+                formattedVelocity = String.valueOf(velocity + " m/s");
+                break;
+            case UNIT_KILOMETERS_PER_HOUR:
+                formattedVelocity = String.valueOf(velocity + " km/h");
+                break;
+            default:
+                return new String();
+        }
+        return formattedVelocity.replace(".", separator);
     }
 
     public String formatTimeInterval(long interval){
-        String formattedTimeInterval = String.format("%d " + abbrMin + separator + " %d " + abbrSec,
+        String formattedTimeInterval = String.format("%d " + abbrMin + "," + " %d " + abbrSec,
                 TimeUnit.MILLISECONDS.toMinutes(interval),
                 TimeUnit.MILLISECONDS.toSeconds(interval) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(interval))
