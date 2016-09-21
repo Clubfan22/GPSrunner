@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Marco Ammon 2015.
+ * Copyright (c) Marco Ammon 2016.
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published by
  * the Free Software Foundation.
@@ -16,11 +16,16 @@
 package me.diskstation.ammon.gpsrunner.ui;
 
 
+import android.Manifest;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -176,14 +181,33 @@ public class OverviewFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
-        //Enable button to show "my location" (using GMaps API v2)
-        gMap.setMyLocationEnabled(true);
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            //Enable button to show "my location" (using GMaps API v2)
+            gMap.setMyLocationEnabled(true);
+        } else {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+        }
         //Create PolylineOptions with a 25px thick, blue line
         plOpt = new PolylineOptions()
                 .width(5)
                 .color(Color.BLUE);
         //addPolyline through adding the PolylineOptions, waypoints are added in updateMap()
         path = gMap.addPolyline(plOpt);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 0:
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, proceed to the normal flow.
+                    gMap.setMyLocationEnabled(true);
+                }
+                break;
+        }
     }
 
     protected void unblockButton(){

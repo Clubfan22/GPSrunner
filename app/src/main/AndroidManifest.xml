@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) Marco Ammon 2015.
+  ~ Copyright (c) Marco Ammon 2016.
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License version 3 as published by
   ~ the Free Software Foundation.
@@ -29,6 +29,7 @@
 
     <uses-permission android:name="me.diskstation.ammon.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
     <uses-feature
         android:glEsVersion="0x00020000"

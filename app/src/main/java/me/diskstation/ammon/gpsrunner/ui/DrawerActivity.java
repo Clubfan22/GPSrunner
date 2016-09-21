@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Marco Ammon 2015.
+ * Copyright (c) Marco Ammon 2016.
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published by
  * the Free Software Foundation.
@@ -238,7 +238,10 @@ public class DrawerActivity extends AppCompatActivity
         nBuilder.setOngoing(true);
         locServ.startForeground(1, nBuilder.build());
     }
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode,permissions, grantResults);
+    }
     @Override
     public void onNavigationDrawerItemSelected(@Items int position) {
         // create fragment depending on selection
